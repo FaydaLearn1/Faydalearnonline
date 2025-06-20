@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fayda Learn - Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background: #f0f4f8; padding: 1rem; }
+
+    header {
+      background: #0077b6;
+      color: white;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .menu-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    nav {
+      display: none;
+      background: #023e8a;
+      padding: 1rem;
+      color: white;
+    }
+
+    nav.active {
+      display: block;
+    }
+
+    form {
+      max-width: 500px;
+      background: white;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+
+    h2 { text-align: center; margin-bottom: 1.5rem; }
+
+    label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .checkbox-row input { width: auto; margin-right: 0.5rem; }
+
+    button {
+      background: #0077b6;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      width: 100%;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #023e8a;
+    }
+
+    .login-link {
+      margin-top: 1rem;
+      text-align: center;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Fayda Learn</h1>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <nav id="hamburgerMenu">
+      <p>Welcome to Fayda Learn</p>
+      <p>Empowering Digital Ethiopia 🇪🇹</p>
+    </nav>
+  </header>
+
+  <form id="registrationForm">
+    <h2>User Registration</h2>
+
+    <label for="firstName">First Name</label>
+    <input type="text" id="firstName" required>
+
+    <label for="middleName">Middle Name</label>
+    <input type="text" id="middleName">
+
+    <label for="lastName">Last Name</label>
+    <input type="text" id="lastName" required>
+
+    <label for="email">Email</label>
+    <input type="email" id="email" required>
+
+    <label for="course">Select Course</label>
+    <select id="course" required>
+      <option value="">-- Select Course --</option>
+      <option value="web">Web Development</option>
+      <option value="android">Android Development</option>
+      <option value="ai">AI Basics</option>
+      <option value="python">Python Programming</option>
+    </select>
+
+    <label for="certificate">Want Certificate?</label>
+    <select id="certificate" required>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+
+    <label for="profilePic">Upload Profile Image</label>
+    <input type="file" id="profilePic" accept="image/*" required>
+
+    <div class="checkbox-row">
+      <input type="checkbox" id="agree" required>
+      <label for="agree">I agree to Terms of Service</label>
+    </div>
+
+    <button type="submit">Sign Up</button>
+
+    <a href="login.html" class="login-link">Already registered? Login</a>
+  </form>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById("hamburgerMenu").classList.toggle("active");
+    }
+
+    document.getElementById("registrationForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value;
+      const middleName = document.getElementById("middleName").value;
+      const lastName = document.getElementById("lastName").value;
+      const email = document.getElementById("email").value;
+      const course = document.getElementById("course").value;
+      const certificate = document.getElementById("certificate").value;
+      const profilePic = document.getElementById("profilePic").files[0];
+      const agree = document.getElementById("agree").checked;
+
+      if (!agree) {
+        alert("You must agree to the terms.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        const userData = {
+          firstName,
+          middleName,
+          lastName,
+          email,
+          course,
+          certificate,
+          profilePic: reader.result
+        };
+
+        // Save to localStorage with email as key
+        localStorage.setItem("currentUser", JSON.stringify(userData));
+
+        // Redirect to course page
+        if (course === "web") {
+          window.location.href = "course-web.html";
+        } else if (course === "android") {
+          window.location.href = "course-android.html";
+        } else if (course === "ai") {
+          window.location.href = "course-ai.html";
+        } else if (course === "python") {
+          window.location.href = "course-python.html";
+        }
+      };
+
+      if (profilePic) {
+        reader.readAsDataURL(profilePic);
+      } else {
+        alert("Please upload a profile picture.");
+      }
+    });
+  </script>
+</body>
+</html>
